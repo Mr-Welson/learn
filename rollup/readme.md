@@ -2,7 +2,7 @@
 
 
 
-![image-20211104163429606](C:\Users\welson\AppData\Roaming\Typora\typora-user-images\image-20211104163429606.png)
+![rollup-logo](https://github.com/Mr-Welson/learn/blob/main/rollup/rollup.png?raw=true)
 
 > Q：为什么要学 rollup.js ？
 >
@@ -177,3 +177,4 @@ export default function () {
 
 
 
+![]()
