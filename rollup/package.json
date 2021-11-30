@@ -4,10 +4,13 @@
   "description": "",
   "main": "rollup.config.js",
   "dependencies": {
-    "dayjs": "^1.10.7"
+    "dayjs": "^1.10.7",
+    "the-answer": "^1.0.0"
   },
   "devDependencies": {
-    "rollup-plugin-json": "^4.0.0"
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   },
   "scripts": {
     "build": "rollup -c"
