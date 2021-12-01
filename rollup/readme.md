@@ -262,7 +262,11 @@ export default {
 npm run build
 ```
 
-#### 
+### 使用 externals
+
+上述样例解决了 ` packages`  的引用问题，但是查看打包后的 bundle 文件会发现，引用的依赖也被打包进了 bundle，有些情况是我们想要构建一个具有对等依赖关系（peer dependency）的库，例如 React 或 Lodash，即不把这些依赖打包到最终的输出文件中。此时，就需要设置 `externals` 属性。
+
+
 
 
 

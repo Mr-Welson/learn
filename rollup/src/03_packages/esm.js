@@ -1,3 +1,4 @@
+// ES Module
 import answer from 'the-answer';
 
 export function showAnswer() {
