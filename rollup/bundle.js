@@ -8,8 +8,10 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var dayjs__default = /*#__PURE__*/_interopDefaultLegacy(dayjs);
 
-function showCurrent() {
-  console.log('当前时间: ' + dayjs__default["default"]().format('YYYY-MM-DD HH:mm:ss'));
-}
+// CommonJS Module
+
+var showCurrent = function showCurrent() {
+  console.log('\u5F53\u524D\u65F6\u95F4: ' + dayjs__default["default"]().format('YYYY-MM-DD HH:mm:ss'));
+};
 
 exports.showCurrent = showCurrent;
