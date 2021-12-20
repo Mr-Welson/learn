@@ -32,6 +32,241 @@ npm install rollup --global
 rollup -v
 ```
 
+### JS API
+
+Rollup 可以通过 Node.js 来使用 JavaScript API，通常不会这样使用，除非你想扩展 Rollup 本身，或者用于一些难懂的任务。
+
+源文件目录  ` rollup/src/00_api`，共有4个文件，介绍了 `input`、`output` 的常用配置项及简单示例。首先需要在本项目中下载 `rollup` 依赖
+
+```
+npm i rollup
+```
+
+1. 需要打包的代码  `src/00_api/main.js`
+
+```
+import $ from 'jquery'
+// 已在 outputOptions 中配置了 jquery 的 cnd 引用及全局变量 $ 申明，故不用在本地下载 jquery 依赖包
+
+function test() {
+  console.log('jquery', $);
+}
+
+function hello() {
+  console.log('hello rollup');
+}
+
+module.exports = {
+  test, hello
+}
+```
+
+2. 打包入口文件 `src/00_api/index.js`
+
+```
+const rollup = require('rollup');
+const inputOptions = require('./inputOptions');
+const outputOptions = require('./outputOptions');
+
+async function build() {
+  // create a bundle
+  const bundle = await rollup.rollup(inputOptions);
+
+  console.log(bundle.imports); // an array of external dependencies
+  console.log(bundle.exports); // an array of names exported by the entry point
+  console.log(bundle.modules); // an array of module objects
+
+  // generate code and a sourcemap
+  // const { code, map } = await bundle.generate(outputOptions);
+
+  // or write the bundle to disk
+  await bundle.write(outputOptions);
+}
+
+build();
+```
+
+3. `rollup` 的` input ` 配置文件: `src/00_api/inputOptions.js`
+
+```
+const inputOptions = {
+  // 核心参数
+  /**
+   * 包文件入口 
+   * -i, --input
+   * String 唯一必填参数
+   */
+  input: "src/00_api/main.js",
+  /**
+   * 外链
+   * -e, --external
+   * object[] 
+   */
+  external: [
+    'jquery'
+  ],
+  /**
+   * 插件
+   * object[] 
+   */
+  plugins: [],
+
+  // 高级参数
+  /**
+   * 警告监听
+   * Function 可以拦截警告信息并进行相应操作
+   */
+  onwarn(warning) {
+    // 跳过某些警告
+    if (warning.code === 'UNUSED_EXTERNAL_IMPORT') {
+      return
+    };
+    // 抛出异常
+    if (warning.code === 'NON_EXISTENT_EXPORT') {
+      throw new Error(warning.message)
+    };
+    // 部分警告会有一个 loc 和 frame 属性，可以定位到警告的位置
+    if (warning.loc) {
+      console.warn(`${warning.loc.file} (${warning.loc.line}:${warning.loc.column}) ${message}`);
+      if (warning.frame) {
+        console.warn(warning.frame)
+      };
+    } else {
+      // 控制台打印一切警告
+      console.warn(warning.message);
+    }
+  },
+  /**
+   * 缓存
+   * 以前生成的包。使用它来加速后续的构建, Rollup只会重新分析已经更改的模块
+   * Object | false 
+   */
+  // cache,
+
+  // 危险参数
+  /**
+   * 默认情况下，模块的上下文 - 即顶级的this的值为undefined。在极少数情况下，您可能需要将其更改为其他内容，如 'window'。
+   */
+  context: undefined,
+  /**
+   * Object | id => context
+   * 同 context, 但是可以定义每个模块的上下文。
+   */
+  // moduleContext,
+  // 兼容 IE8 及一些老版本浏览器，通常不需要
+  // legacy
+};
+
+module.exports = inputOptions;
+```
+
+4. `rollup` 的` output` 配置文件: `src/00_api/ioutputOptions.js`
+
+```
+const outputOptions = {
+  // 核心参数
+  /**
+   * 输出包或sourcemap的路径和文件名
+   * -o, --output.file
+   * String
+   */
+  file: "bundle.js",
+  /**
+   * 输出包的格式
+   * -f, --output.format
+   * String 必填, 枚举值：
+   * amd – 异步模块定义，用于像RequireJS这样的模块加载器
+   * cjs – CommonJS，适用于 Node 和 Browserify/Webpack
+   * esm – 将软件包保存为 ES 模块文件，在现代浏览器中可以通过 <script type=module> 标签引入
+   * iife – 一个自动执行的功能，适合作为<script>标签。（如果要为应用程序创建一个捆绑包，您可能想要使用它，因为它会使文件大小变小）
+   * umd – 通用模块定义，以amd，cjs 和 iife 为一体
+   * system - SystemJS 加载器格式
+   */
+  format: "umd",
+  /**
+   * 生成包的名称(变量名称)
+   * -n, --name
+   * String 代表你的 iife/umd 包，同一页上的其他脚本可以访问它
+   */
+  // name: "MyBundle",
+  /**
+   * 全局变量申明
+   * -g, --globals
+   * Object 用于 umd/iife 包
+   */
+  globals: {
+    jquery: '$'
+  },
+
+  // 高级参数
+  /**
+   * 路径
+   * Function | Object 可用于配置 externals 的 cdn 引用
+   */
+  paths: {
+    jquery: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js'
+  },
+  /**
+   * 文件前置信息
+   * String 自动添加到bundle最前面，可以添加作者、插件地址、版本信息等
+   */
+  banner: '/* my-library version 1.0 */',
+  /**
+   * 文件后置信息
+   * String 追加到bundle文件末尾的信息
+   */
+  footer: '/* follow me on Github! */',
+  /**
+   * 代码包装器
+   * String 类似banner/footer
+   * intro 会放到正式代码开头
+   * outro 会放到正式代码末尾
+   * 可在打包的 bundle 中观察具体添加位置
+   */
+  intro: '/* intro test */',
+  outro: '/* outro test */',
+  /**
+   * -m, --sourcemap
+   * Boolean | 'inline' | 'hidden'
+   * 默认false: 不创建 sourcemap 
+   * true：将创建一个单独的sourcemap文件
+   * inline：sourcemap 将作为数据 URI附加到生成的output文件中
+   * hidden： 跟 true 类似，但是会屏蔽相应文件的注释信息
+   */
+  sourcemap: false,
+  /**
+   * String 生成的包的位置
+   */
+  // sourcemapFile: '',
+  /**
+   * Boolean
+   * 默认为 true
+   */
+  // interop,
+
+  // 危险区域
+  // exports,
+  // amd,
+  // indent,
+  /**
+   * Boolean 默认为true
+   * 是否在生成的非ES6包的顶部添加 'use strict' 语法
+   */
+  strict: true
+};
+
+module.exports = outputOptions;
+```
+
+5. 使用 `node` 命令执行打包
+
+```
+// rollup 根目录
+node src\00_api\index.js
+```
+
+打包完成后，可以观察 `bundle` 中 `banner/footer/intro/outro`  对应的具体位置
+
 ### 命令行打包
 
 源文件目录  ` rollup/src/01_command ` 
@@ -394,3 +629,58 @@ npm i babel-core@6.22.0 -D
 - 再次执行 `npm run build` ，打包成功。
 
 查看此时打包后的 bundle.js 就会发现箭头函数已经变成了普通 `function` ，模板字符串也变成了字符串拼接，可以确保 js 能在较低版本的浏览器中顺利执行。
+
+### 使用 Gulp 
+
+[Gulp指南](https://www.gulpjs.com.cn/docs/getting-started/quick-start/)
+
+须先安装 `gulp` 环境
+
+```
+npm i gulp-cli -g
+npm i gulp -D
+```
+
+源文件目录  ` rollup/src/06_gulp `
+
+`rollup` 的 `js-api` 返回 `promise`，可以很容易的跟 `Gulp` 结合
+
+1. 创建 `src/06_gulp/gulpfile.js` ， `gulpfile.js` 为 `gulp` 读取的文件，文件名不能修改
+
+```
+const gulp = require('gulp');
+const rollup = require('rollup');
+
+gulp.task('build', async function () {
+  const bundle = await rollup.rollup({
+    input: './main.js',
+  });
+
+  await bundle.write({
+    file: 'bundle.js',
+    format: 'umd',
+    name: 'library'
+  });
+});
+```
+
+2. 源码文件   `src/06_gulp/main.js`
+
+```
+
+function hello() {
+  console.log('hello gulp');
+}
+
+module.exports = {
+  hello
+}
+```
+
+3. 在 `src/06_gulp` 文件目录下执行 `gulp` 命令
+
+```
+gulp build
+```
+
+4. 执行完成，会在 `src/06_gulp` 目录下生成 `bundle.js`

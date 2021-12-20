@@ -5,6 +5,8 @@
   "main": "rollup.config.js",
   "dependencies": {
     "dayjs": "^1.10.7",
+    "gulp": "^4.0.2",
+    "rollup": "^2.61.1",
     "the-answer": "^1.0.0"
   },
   "devDependencies": {
