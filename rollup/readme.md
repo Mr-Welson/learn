@@ -1,4 +1,4 @@
-# Rollup
+# Rollup 学习笔记
 
 
 
@@ -10,7 +10,12 @@
 
 ## 介绍
 
-[**Rollup**](https://www.rollupjs.com/)  是一个 JavaScript 模块打包器，可以将小块代码编译成大块复杂的代码，例如 library 或应用程序。
+[Rollup 中文文档](https://www.rollupjs.com/) 是对英文文档的翻译，但在配置项一章忽略了部分可用配置及相关的配置介绍，更全更详细的配置项可以查看 [Rollup 英文文档](https://rollupjs.org/guide/en/#introduction) 。
+
+本文根据 Rollup 中文文档整理，并补充了部分英文文档上有的配置项说明。
+完整代码地址： [Rollup 笔记](https://github.com/Mr-Welson/learn/tree/main/rollup)
+
+**Rollp 是一个 JavaScript 模块打包器，可以将小块代码编译成大块复杂的代码，例如 library 或应用程序**。
 
 Rollup 对代码模块使用新的标准化格式 (**ES6语法**)，而不是以前的特殊解决方案，如 CommonJS 和 AMD。加载 CommonJS 模块和使用 Node 模块位置解析逻辑都被实现为可选插件，需要安装对应插件然后在 `rollup.config.js` 中启用他们，后文中会具体示例。
 
@@ -32,7 +37,7 @@ npm install rollup --global
 rollup -v
 ```
 
-### JS API
+### JS-API
 
 Rollup 可以通过 Node.js 来使用 JavaScript API，通常不会这样使用，除非你想扩展 Rollup 本身，或者用于一些难懂的任务。
 
@@ -289,7 +294,7 @@ rollup src/01_command/main.js -o bundle.js -f cjs
 
 ### 使用配置文件
 
-源文件目录  ` rollup/src/01_command ` 
+源文件目录  ` rollup/src/01_command ` ，详细的 `input/output` 配置项可以查看 [JS-API](#JS API) 一章
 
 1. 在项目根目录创建 ` rollup.config.js`
 
@@ -612,7 +617,7 @@ npm i -D babel-core babel-preset-latest babel-plugin-external-helpers
 npm run build
 ```
 
-​	这里可能会遇到打包报错的提示，是因为官方文档的示例 (本文也是参考的官方文档) 使用的是 `babel 6`，而 `babel` 现在已经升级到 `babel 7` 了。最快速的解决办法就是切换 ` babel 6` ，当然也可以升级到 `babel 7`，具体升级办法可以自行百度。下文简述使用 `babel 6` 的方法。 
+	这里可能会遇到打包报错的提示，是因为官方文档的示例 (本文也是参考的官方文档) 使用的是 `babel 6`，而 `babel` 现在已经升级到 `babel 7` 了。最快速的解决办法就是切换 ` babel 6` ，当然也可以升级到 `babel 7`，具体升级办法可以自行百度。下文简述使用 `babel 6` 的方法。 
 
 - 使用 `npm view babel-core versions` 查看 `babel` 所有的版本，v6 最后一个版本是  6.26.3，直接安装
 
@@ -632,7 +637,7 @@ npm i babel-core@6.22.0 -D
 
 ### 使用 Gulp 
 
-[Gulp指南](https://www.gulpjs.com.cn/docs/getting-started/quick-start/)
+[Gulp官网](https://www.gulpjs.com.cn/docs/getting-started/quick-start/)
 
 须先安装 `gulp` 环境
 
@@ -684,3 +689,10 @@ gulp build
 ```
 
 4. 执行完成，会在 `src/06_gulp` 目录下生成 `bundle.js`
+
+
+## 仓库
+
+完整代码地址： [Rollup 笔记](https://github.com/Mr-Welson/learn/tree/main/rollup)
+
+> 完
