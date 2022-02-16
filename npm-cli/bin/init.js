@@ -3,7 +3,6 @@ const path = require('path');
 const { isFile } = require('../utils');
 
 function copyFile(source, target) {
-  // console.log(`${source}  -->  ${target}`);
   fs.cp(
     source,
     target,
@@ -14,10 +13,10 @@ function copyFile(source, target) {
     },
     function (error, result) {
       if (error) {
-        console.log(`${source} copy failed!`);
+        console.log(`${source} 复制失败!`);
         return;
       }
-      console.log(`copy ${source} successed!`);
+      console.log(`${source} 复制成功!`);
     }
   );
 }
@@ -51,7 +50,7 @@ function init() {
   const sourceDir = './template';
   // 在当前项目根目录创建 mock 文件夹
   const destDir = 'mock';
-  console.log('== init start ==');
+  console.log('== 开始复制模板 ==');
   // 验证模板文件是否存在
   try {
     fs.accessSync(sourceDir, fs.constants.F_OK);
