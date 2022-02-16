@@ -38,12 +38,9 @@ program
   });
 
 program
-  .command('generate [type]')
-  .alias('g')
-  .description('generate file from a template  (short-cut alias: "g")')
-  .action((type) => {
-    console.log('== type ==', type);
-  });
+  .command('init')
+  .description('init mock server')
+  .action(require('./init'));
 
 // 这一行不能丢, 否则无法解析输入的参数
 program.parse(process.argv);
