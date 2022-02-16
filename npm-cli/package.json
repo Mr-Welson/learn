@@ -1,0 +1,14 @@
+{
+  "name": "cat-cli",
+  "version": "1.0.0",
+  "description": "node-cli",
+  "bin": {
+    "cat": "./bin/cat.js"
+  },
+  "keywords": [],
+  "author": "welson",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^9.0.0"
+  }
+}
