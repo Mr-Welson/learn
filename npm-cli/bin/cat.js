@@ -38,7 +38,7 @@ program
   });
 
 program
-  .command('init [folder]')
+  .command('init [folderName]')
   .description('init mock server')
   .action(require('./init'));
 
