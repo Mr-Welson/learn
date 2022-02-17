@@ -1,14 +1,14 @@
-# node-cli 
+# Node-cli 
 
 命令行工具（Cmmand Line Interface）简称 `cli`，顾名思义就是在命令行终端中使用的工具。本文记录从零发布一个简单命令行工具的全过程。
 
 请确保电脑装有 `Node.js v12+`   环境
 
-
-
 ## 初始化
 
 开始之前先看一下初始化之后的目录结构
+
+[完整代码](https://github.com/Mr-Welson/learn/tree/main/npm-cli)
 
 ```
 ┌── bin							// 命令行文件夹
@@ -36,6 +36,11 @@ mkdir bin && cd bin
 touch cat.js
 ```
 
+```
+// cat.js
+console.log('this is cat')
+```
+
 在生成的 `package.json` 中添加 `bin` 属性来定义命令名称及执行文件
 
 ```
@@ -44,7 +49,17 @@ touch cat.js
 }
 ```
 
-## 添加命令
+此时执行 `cat` 命令，会报错："***'dog' 不是内部或外部命令，也不是可运行的程序或批处理文件*** "，是因为这个命令还没有被链接到全局。需要执行 `npm link` 命令，如执行命令出现报错，则重新执行一次。
+
+```
+npm link
+```
+
+当依赖包没有安装到全局时，可以使用 `npm link` 进行手动链接，方便本地开发和调试。此时，再次输入 `cat` 命令，就可以看到 `cat.js` 内的代码被执行了。
+
+当命令行工具包发布到 `npm` 上，然后通过全局安装，就可以直接执行命令，不需要 `link` 了
+
+## 添加命令 
 
 需要借助 `commander.js` 来实现我们的命令行工具， [Commander.js](https://github.com/tj/commander.js/blob/master/Readme_zh-CN.md)  是一个完整的 `node.js` 命令行解决方案。
 
