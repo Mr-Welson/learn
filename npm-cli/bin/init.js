@@ -44,12 +44,11 @@ function copyDir(sourceDir, destDir) {
 }
 
 // 生成模板
-function init() {
+function init(destDir = 'mock') {
   // 模板目录路径
   // const sourceDir = '/usr/local/lib/node_modules/@welson/mock/template';
   const sourceDir = './template';
   // 在当前项目根目录创建 mock 文件夹
-  const destDir = 'mock';
   console.log('== 开始复制模板 ==');
   // 验证模板文件是否存在
   try {
