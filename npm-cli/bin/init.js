@@ -12,14 +12,10 @@ function getRootPath() {
 
 // 复制文件
 function copyFile(source, target) {
-  fs.cp(
+  fs.copyFile(
     source,
     target,
-    {
-      force: true, // 是否强制生成文件, 若文件已存在则覆盖
-      // errorOnExist: true, // force 为 false 且文件已存在时，抛出错误
-      // recursive: false, // 是否递归复制
-    },
+    fs.constants.COPYFILE_FICLONE_FORCE,
     function (error) {
       const fileName = target.split(appPath)[1];
       if (error) {

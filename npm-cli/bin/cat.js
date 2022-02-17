@@ -42,5 +42,6 @@ program
   .description('init mock server')
   .action(require('./init'));
 
+// 解析用户执行命令传入参数
 // 这一行不能丢, 否则无法解析输入的参数
 program.parse(process.argv);
