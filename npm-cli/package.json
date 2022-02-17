@@ -1,14 +1,20 @@
 {
-  "name": "cat-cli",
-  "version": "1.0.0",
+  "name": "@iwelson/cat-cli",
+  "version": "1.0.7",
   "description": "node-cli",
   "bin": {
     "cat": "./bin/cat.js"
+  },
+  "scripts": {
+    "publish": "npm publish --access public"
   },
   "keywords": [],
   "author": "welson",
   "license": "ISC",
   "dependencies": {
     "commander": "^9.0.0"
+  },
+  "devDependencies": {
+    "inquirer": "^8.2.0"
   }
 }
