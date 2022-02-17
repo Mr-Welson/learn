@@ -12,45 +12,42 @@ function getRootPath() {
 
 // 复制文件
 function copyFile(source, target) {
-  fs.copyFile(
-    source,
-    target,
-    fs.constants.COPYFILE_FICLONE_FORCE,
-    function (error) {
-      const fileName = target.split(appPath)[1];
-      if (error) {
-        console.log(`${fileName} 复制失败!`, error);
-        console.log(error);
-        console.log();
-        return;
-      }
-      console.log(`${fileName} 复制成功!`);
+  fs.copyFile(source, target, function (error) {
+    const fileName = target.split(`${appPath}\\`)[1];
+    if (error) {
+      console.log(`Error: ${fileName} 创建成功!`);
+      console.log(error);
+      console.log();
+      return;
     }
-  );
+    console.log(`${fileName} 创建成功!`);
+  });
 }
 
 // 复制文件夹
 function copyDir(sourceDir, destDir) {
   fs.readdir(sourceDir, (error, files) => {
     if (error) {
-      console.log(`${destDir} 复制失败`);
+      console.log(`Error: ${destDir} 创建失败`);
       console.log(error);
       console.log();
       return;
     }
-    files.map((fileName) => {
-      const filePath = path.join(sourceDir, fileName);
-      if (Utils.isFile(filePath)) {
+    files.map((file) => {
+      const source = path.join(sourceDir, file);
+      if (Utils.isFile(source)) {
         // 文件
-        const target = path.join(destDir, fileName);
-        copyFile(filePath, target);
+        const target = path.join(destDir, file);
+        copyFile(source, target);
       } else {
         // 文件夹
-        destDir = path.join(destDir, fileName);
-        copyDir(filePath, destDir);
+        const newDestDir = path.join(destDir, file);
+        if (!fs.existsSync(newDestDir)) {
+          fs.mkdirSync(newDestDir);
+        }
+        copyDir(source, newDestDir);
       }
     });
-    //
   });
 }
 
@@ -74,27 +71,25 @@ function init(folderName = 'mock') {
   const destDir = path.join(appPath, folderName);
 
   // 验证模板文件是否存在
-  try {
-    fs.accessSync(sourceDir, fs.constants.F_OK);
-  } catch (err) {
+  if (!fs.existsSync(sourceDir)) {
     return console.error('模板不存在, 请重新安装');
   }
 
   // 验证目标文件夹是否存在
-  try {
-    fs.accessSync(destDir, fs.constants.F_OK);
+  if (fs.existsSync(destDir)) {
     const files = fs.readdirSync(destDir);
     files.length &&
       checkDestDirExist(files).then((answers) => {
         if (answers.continue) {
           copyDir(sourceDir, destDir);
         } else {
+          console.log('已退出创建任务');
           process.exit();
         }
       });
-  } catch (err) {
-    // 目标文件夹不存在, 可以复制
-    console.log('== 开始复制模板 ==');
+  } else {
+    // 创建文件夹
+    fs.mkdirSync(destDir);
     copyDir(sourceDir, destDir);
   }
 }
