@@ -8,7 +8,9 @@
 
 开始之前先看一下初始化之后的目录结构
 
-[完整代码](https://github.com/Mr-Welson/learn/tree/main/npm-cli)
+- [Demo完整代码](https://github.com/Mr-Welson/learn/tree/main/npm-cli)
+
+- [mock-server-cli](https://www.npmjs.com/package/@iwelson/mock-server-cli)  一个完整的脚手架工具
 
 ```
 ┌── bin							// 命令行文件夹
@@ -36,9 +38,12 @@ mkdir bin && cd bin
 touch cat.js
 ```
 
+`cat.js` 写入一下内容
+
 ```
-// cat.js
-console.log('this is cat')
+#!/usr/bin/env node
+
+console.log('this is cat.js')
 ```
 
 在生成的 `package.json` 中添加 `bin` 属性来定义命令名称及执行文件
@@ -55,9 +60,9 @@ console.log('this is cat')
 npm link
 ```
 
-当依赖包没有安装到全局时，可以使用 `npm link` 进行手动链接，方便本地开发和调试。此时，再次输入 `cat` 命令，就可以看到 `cat.js` 内的代码被执行了。
+此时工具包还没有发布到 `npm` ，需要使用 `npm link` 命令创建全局链接，方便本地开发和调试。当命令行工具包发布到 `npm` 后，安装工具包时会自动创建全局链接。
 
-当命令行工具包发布到 `npm` 上，然后通过全局安装，就可以直接执行命令，不需要 `link` 了。
+再次输入 `cat` 命令，就可以看到 `cat.js` 内的代码被执行了。
 
 ## 添加命令 
 
