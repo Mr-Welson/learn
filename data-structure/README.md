@@ -1,10 +1,10 @@
 # 数据结构
+
 ## 栈 Stack
+
 栈是一种特殊的线性表，它只能在一个表的一个固定端进行数据结点的插入和删除操作。
 
 - 后进先出（LIFO：last-in，first-out）
-
-
 
 ## 队列 Queue
 
@@ -13,5 +13,3 @@
 - 先进先出（FIFO：first-in，first-out）
 
 ## 链表 LinkList
-
-
