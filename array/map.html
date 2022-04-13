@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <h1>数组的遍历</h1>
+    <script>
+      // 遍历方法: for map forEach every some filter find  findLast findIndex findLastIndex
+      // 前提: 查找到含有元素 3 则退出
+      const array = [1, 2, 3, 4, 3, 2, 1];
+      // 记录遍历次数
+      let count = 0;
+
+      // 重置 count
+      function resetCount(api) {
+        console.log(' ');
+        console.log(`${api} >> ${count}`);
+        count = 0;
+      }
+      // 更新 count
+      function recordCount() {
+        count++;
+      }
+
+      // for循环
+      for (let i = 0; i < array.length; i++) {
+        recordCount();
+        const item = array[i];
+        if (item === 3) {
+          break;
+        }
+        continue;
+      }
+      resetCount('for');
+
+      // map
+      const mapResult = array.map((v) => {
+        recordCount();
+        return v === 3;
+      });
+      resetCount('map');
+      console.log(mapResult); // [false, false, true, false, true, false, false]
+
+      // forEach
+      const forEachResult = array.forEach((v) => {
+        recordCount();
+        return v === 3;
+      });
+      resetCount('forEach');
+      console.log(forEachResult); // undefined
+
+      // every
+      const everyResult = array.every((v) => {
+        recordCount();
+        return v === 3;
+      });
+      resetCount('every');
+      console.log(everyResult); // false
+
+      // some
+      const someResult = array.some((v) => {
+        recordCount();
+        return v === 3;
+      });
+      resetCount('some');
+      console.log(someResult); // true
+
+      // filter
+      const filterResult = array.filter((v) => {
+        recordCount();
+        return v === 3;
+      });
+      resetCount('filter');
+      console.log(filterResult); // [3,3]
+
+      // find/findLast
+      const findResult = array.find((v) => {
+        recordCount();
+        return v === 3;
+      });
+      resetCount('find'); // 7
+      console.log(findResult); // 3
+
+      // findIndex/findLastIndex
+      const findIndexResult = array.findIndex((v) => {
+        recordCount();
+        return v === 3;
+      });
+      resetCount('findIndex'); // 3
+      console.log(findIndexResult); // 2
+
+      // 2. 遍历耗时
+    </script>
+  </body>
+</html>
