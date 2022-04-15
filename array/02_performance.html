@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <h1>数组的遍历性能</h1>
+    <script>
+      // 遍历方法: for map forEach every some filter find  findLast findIndex findLastIndex
+
+      // 前提: 从 array 中查找到元素 id 为 targetId 则退出（遍历全部）
+      let id = 1;
+      // 源数组
+      const array = Array.from({ length: 1000000 }).map((v) => ({ id: id++, count: parseInt(Math.random() * 1000) }));
+      id = null;
+      console.log(' array 的长度 >> ', array.length);
+
+      let apiName = '';
+      // 记录开始时间
+      function tiemStart(api) {
+        apiName = api;
+        console.log(' ');
+        console.log(`${api} 性能测试`);
+        console.time(apiName);
+      }
+      // 记录结束时间
+      function tiemEnd() {
+        console.timeEnd(apiName);
+        apiName = '';
+      }
+
+      // 目标ID
+      const targetId = 1000000;
+
+      // for循环
+      tiemStart('for');
+      for (let i = 0; i < array.length; i++) {
+        const item = array[i];
+        if (item.id === targetId) {
+          break;
+        }
+        continue;
+      }
+      tiemEnd();
+
+      // map
+      tiemStart('map');
+      array.map((v) => v.id === targetId);
+      tiemEnd();
+
+      // forEach
+      tiemStart('forEach');
+      array.forEach((v) => v.id === targetId);
+      tiemEnd();
+
+      // filter
+      tiemStart('filter');
+      array.filter((v) => v.id === targetId);
+      tiemEnd();
+
+      // find/findLast
+      tiemStart('find');
+      array.find((v) => v.id === targetId);
+      tiemEnd();
+
+      // findIndex/findLastIndex
+      tiemStart('findIndex');
+      array.findIndex((v) => v.id === targetId);
+      tiemEnd();
+
+      // every
+      tiemStart('every');
+      // 为了让 every 也能遍历相同次数，这里直接返回一个 true
+      array.every((v) => true);
+      tiemEnd();
+
+      // some
+      tiemStart('some');
+      array.some((v) => v.id === targetId);
+      tiemEnd();
+    </script>
+  </body>
+</html>
